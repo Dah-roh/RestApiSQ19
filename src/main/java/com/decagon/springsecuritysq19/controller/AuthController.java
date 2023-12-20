@@ -3,6 +3,7 @@ package com.decagon.springsecuritysq19.controller;
 import com.decagon.springsecuritysq19.dto.UserDto;
 import com.decagon.springsecuritysq19.model.Users;
 import com.decagon.springsecuritysq19.serviceImpl.UserServiceImpl;
+import com.decagon.springsecuritysq19.utils.GoogleJwtUtils;
 import com.decagon.springsecuritysq19.utils.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -10,23 +11,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/v1/")
 @Slf4j
 public class AuthController {
 
     private UserServiceImpl userService;
     private JwtUtils jwtUtils;
+    private GoogleJwtUtils googleJwtUtils;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(UserServiceImpl userService, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+    public AuthController(UserServiceImpl userService, JwtUtils jwtUtils, GoogleJwtUtils googleJwtUtils, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.jwtUtils = jwtUtils;
+        this.googleJwtUtils = googleJwtUtils;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping("/google/{tkn}")
+    public ResponseEntity<String> authorizeOauthUser(@PathVariable("tkn") String token){
+        return ResponseEntity.ok(googleJwtUtils.googleOauthUserJWT(token));
+
     }
 
     @GetMapping("/index")

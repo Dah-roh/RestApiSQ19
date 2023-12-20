@@ -52,9 +52,9 @@ public class WebSecurityConfig {
                  .csrf(AbstractHttpConfigurer::disable)
                  .authorizeHttpRequests(httpRequests->
                          httpRequests
-                                 .requestMatchers("/sign-up", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v3/api-docs.yaml",
-                                         "/login" ).permitAll()
-                                 .requestMatchers("/index").authenticated())
+                                 .requestMatchers("/api/v1/sign-up", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api/v1/google/**", "/v3/api-docs.yaml",
+                                         "/api/v1/login" ).permitAll()
+                                 .requestMatchers("/api/v1/index").authenticated())
                  .sessionManagement(sessionManagement->
                          sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                  .authenticationProvider(authenticationProvider())

@@ -23,7 +23,8 @@ import java.util.Collections;
 public class Users implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user-seq", initialValue = 2000)
     @JsonIgnore
     private Long id;
     @Column(unique = true)

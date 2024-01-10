@@ -1,0 +1,31 @@
+version: "3"
+services:
+  app:
+    build: ./
+    container_name: RestApi-app
+    ports:
+      - 8083:8083
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/securitytest
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_USERNAME: postgres
+    depends_on:
+      - db
+    networks:
+      - rest-api
+
+  db:
+    image: postgres:latest
+    container_name: postgresDB
+    ports:
+      - 5433:5433
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: securitytest
+    networks:
+      - rest-api
+
+networks:
+  rest-api:
+    driver: bridge
